@@ -27,6 +27,13 @@ export const cartProvider = ({children}) => {
         }
     }
 
+    const removeProduct = (product) => {
+        setProducts(prev => {
+            const filteredProducts = prev.filter((p) => p.id != product.id);
+            return filteredProducts;
+        })
+    }
+
 }
 
 export const useCartContext = () => {
