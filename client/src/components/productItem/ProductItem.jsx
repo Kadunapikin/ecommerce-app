@@ -1,10 +1,16 @@
 import React from 'react';
 import classes from './productItem.module.css';
 
-const ProductItem = () => {
+const Products = () => {
   return (
-    <div>ProductItem</div>
+    <div className={classes.container}>
+        {products.map((product) => {
+            <div key={product.id}>
+
+            </div>
+        })}
+    </div>
   )
 }
 
-export default ProductItem
+export default Products
