@@ -4,11 +4,11 @@ import { products } from '../../data/data';
 import { useCartContext } from '../../context/cartContext';
 
 const Products = () => {
-    const {addProduct} = useCartContext
+    const {addProduct} = useCartContext();
 
   return (
     <div className={classes.container}>
-        {products.map((product) => {
+        {products.map((product) => (
             <div key={product.id} className={classes.product}>
                 <img src={product.img} alt="" />
                 <div className={classes.productDetails}>
@@ -17,7 +17,7 @@ const Products = () => {
                 </div>
                 <button onClick={() => addProduct(product)}>Add to Cart</button>
             </div>
-        })}
+        ))}
     </div>
   )
 }

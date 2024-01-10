@@ -29,12 +29,12 @@ export const CartProvider = ({ children }) => {
 
     const removeProduct = (product) => {
         setProducts(prev => {
-            const filteredProducts = prev.filter((p) => p.id != product.id);
+            const filteredProducts = prev.filter((p) => p.id !== product.id);
             return filteredProducts;
         })
     }
 
-    <cartContext.Provider value={{
+    return <cartContext.Provider value={{
         isOpen,
         toggleCart,
         addProduct,
@@ -46,5 +46,5 @@ export const CartProvider = ({ children }) => {
 }
 
 export const useCartContext = () => {
-    return useContext(useCartContext);
+    return useContext(cartContext);
 }
