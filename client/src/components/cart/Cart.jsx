@@ -6,6 +6,23 @@ import { loadStripe } from '@stripe/stripe-js';
 
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+  const handleCheckout = async () => {
+    const lineItems = products.map((item) => {
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.name
+          },
+          unit_amount: item.price * 100
+        },
+        quantity: item.quantity
+      }
+    })
+    const {data} = axios.post('http://localhost:5000/checkout', {lineItems})
+  }
 
   return (
     <div className={classes.container}>
