@@ -1,4 +1,5 @@
 .container{
+    margin-top: 0.5rem;
     height: 60px;
     width: 100%;
 }
@@ -27,4 +28,66 @@
     align-items: center;
     bottom: 2.5rem;
     right: -0.5rem;
+}
+
+.cartContainer{
+    position: absolute;
+    top: 1.75rem;
+    background-color: #efefef;
+    padding: 1rem;
+    right: 1rem;
+}
+
+.cartContainer > h4{
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.cartContainer > .controls > span{
+    display: inline-block;
+}
+
+.productContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.product{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.productDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.product > img{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.controls{
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.controls > button{
+    outline: none;
+    border: none;
+    padding: 0.4rem 1rem;
+    background-color: green;
+    color: #fff;
+    border-radius: 7px;
 }
