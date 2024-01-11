@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './cart.module.css';
 import { useCartContext } from '../../context/cartContext';
 import {AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai';
+import { loadStripe } from '@stripe/stripe-js';
 
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
