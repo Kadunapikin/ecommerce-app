@@ -3,11 +3,12 @@ import classes from './cart.module.css';
 import { useCartContext } from '../../context/cartContext';
 import {AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai';
 import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
+  
   const handleCheckout = async () => {
     const lineItems = products.map((item) => {
       return {
@@ -21,7 +22,11 @@ const Cart = () => {
         quantity: item.quantity
       }
     })
-    const {data} = axios.post('http://localhost:5000/checkout', {lineItems})
+    const {data} = await axios.post('http://localhost:5000/checkout', {lineItems})
+    
+    const stripe = await stripePromise
+
+    await stripe.redirectToCheckout({sessionId: data.id})
   }
 
   return (
@@ -50,7 +55,7 @@ const Cart = () => {
                   ))}
                 </div>
                 <div className={classes.controls}>
-                  <button onClick={() => {}}>Checkout</button>
+                  <button onClick={handleCheckout}>Checkout</button>
                   <span onClick={toggleCart}>Close Cart</span>
                 </div>
                 </>
