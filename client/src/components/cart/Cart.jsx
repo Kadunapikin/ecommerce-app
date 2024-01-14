@@ -4,6 +4,7 @@ import { useCartContext } from '../../context/cartContext';
 import {AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import LogoutButton from '../logoutButton/LogoutButton';
 
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
@@ -72,6 +73,7 @@ const Cart = () => {
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
+        <div className={classes.logoutbtn}>{<LogoutButton />}</div>
         <div className={classes.cartIcon}>
           <AiOutlineShoppingCart size={25} onClick={toggleCart} />
           <span className={classes.cartNumber}>
@@ -104,7 +106,6 @@ const Cart = () => {
           )}
         </div>
       </div>
-      Cart
     </div>
   )
 }

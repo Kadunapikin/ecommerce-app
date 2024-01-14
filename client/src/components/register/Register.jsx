@@ -47,7 +47,7 @@ const Register = () => {
       toast.success('Registration successful');
   
       // Redirect to the success page or any desired page after successful registration
-      navigate('/');
+      navigate('/product');
     } catch (error) {
       // Handle registration error (e.g., show an error message to the user)
       console.error(error);

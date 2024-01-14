@@ -21,18 +21,32 @@ function App() {
         <Route
           path="/"
           element={
+            <div>
+              <h2>Welcome to Our E-Commerce Store!</h2>
+              <p>
+                To view and add products to your cart, please{' '}
+                {isAuthenticated ? (
+                  <Link to="/product">proceed to products</Link>
+                ) : (
+                  <>
+                    <Link to="/login">Login</Link> or{' '}
+                    <Link to="/register">Register</Link> first.
+                  </>
+                )}
+              </p>
+            </div>
+          }
+        />
+        <Route
+          path="/product"
+          element={
             isAuthenticated ? (
               <>
                 <Cart />
                 <ProductItem />
               </>
             ) : (
-              <div>
-                <p>
-                  Please <Link to="/login">Login</Link> or{' '}
-                  <Link to="/register">Register</Link> to view and add products.
-                </p>
-              </div>
+              <Login />
             )
           }
         />

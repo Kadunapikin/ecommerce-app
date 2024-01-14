@@ -18,13 +18,14 @@ const Login = () => {
       const token = response.data.token;
       localStorage.setItem('token', token);
       toast.success('Login successful');
-      navigate('/');
+      navigate('/product');
     } catch (error) {
       // Handle login error and display a toast message
       console.error('Login error:', error);
       toast.error('Login failed. Please check your email and password.');
     }
   };
+
   return (
     <div>
       <h2>Login</h2>
