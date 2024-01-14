@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Cart from './components/cart/Cart';
 import ProductItem from './components/productItem/ProductItem';
@@ -8,31 +9,36 @@ import Login from './components/login/Login';
 
 function App() {
   const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem('token'); // Check if the user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem('token'));
+  }, []); // Check authentication status on component mount
 
   return (
     <div>
       <Routes>
         <Route
-          path='/'
+          path="/"
           element={
-            <>
-              {isAuthenticated && <Cart />}
-              {isAuthenticated && <ProductItem />}
-              {!isAuthenticated && (
-                <div>
-                  <p>
-                    Please <Link to='/login'>Login</Link> or{' '}
-                    <Link to='/register'>Register</Link> to view and add products.
-                  </p>
-                </div>
-              )}
-            </>
+            isAuthenticated ? (
+              <>
+                <Cart />
+                <ProductItem />
+              </>
+            ) : (
+              <div>
+                <p>
+                  Please <Link to="/login">Login</Link> or{' '}
+                  <Link to="/register">Register</Link> to view and add products.
+                </p>
+              </div>
+            )
           }
         />
-        <Route path='/success' element={<Success />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify'; // Import react-toastify
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Create a navigate function for navigation
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      // Make a POST request to your backend for login
+      console.log('Logging in with email:', email);
       const response = await axios.post('http://localhost:5000/login', {
         email,
         password,
-      });
-
-      // Assuming your backend sends a token on successful login
+      });  
       const token = response.data.token;
-
-      // Store the token in localStorage or a state management library (e.g., Redux)
       localStorage.setItem('token', token);
-
-      // Redirect to the success page or any desired page after successful login
+      toast.success('Login successful');
       navigate('/');
     } catch (error) {
-      // Handle login error (e.g., show an error message to the user)
-      console.error(error);
+      // Handle login error and display a toast message
+      console.error('Login error:', error);
+      toast.error('Login failed. Please check your email and password.');
     }
   };
-
   return (
     <div>
       <h2>Login</h2>

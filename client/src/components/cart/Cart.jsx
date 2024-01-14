@@ -8,26 +8,66 @@ import axios from 'axios';
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-  
-  const handleCheckout = async () => {
-    const lineItems = products.map((item) => {
-      return {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.name
-          },
-          unit_amount: item.price * 100
-        },
-        quantity: item.quantity
-      }
-    })
-    const {data} = await axios.post('http://localhost:5000/checkout', {lineItems})
-    
-    const stripe = await stripePromise
 
-    await stripe.redirectToCheckout({sessionId: data.id})
-  }
+  const handleCheckout = async () => {
+    try {
+      // Retrieve the JWT token from localStorage
+      const token = localStorage.getItem('token');
+  
+      const lineItems = products.map((item) => {
+        return {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price * 100,
+          },
+          quantity: item.quantity,
+        };
+      });
+      const { data } = await axios.post(
+        'http://localhost:5000/checkout',
+        { lineItems },
+        {
+          headers: {
+            // Include the JWT token in the Authorization header
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+  
+      const stripe = await stripePromise;
+  
+      const result = await stripe.redirectToCheckout({ sessionId: data.id });
+  
+      if (result.error) {
+        console.error(result.error.message); // Log the error
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+    
+  // const handleCheckout = async () => {
+  //   const lineItems = products.map((item) => {
+  //     return {
+  //       price_data: {
+  //         currency: 'usd',
+  //         product_data: {
+  //           name: item.name
+  //         },
+  //         unit_amount: item.price * 100
+  //       },
+  //       quantity: item.quantity
+  //     }
+  //   })
+  //   const {data} = await axios.post('http://localhost:5000/checkout', {lineItems})
+    
+  //   const stripe = await stripePromise
+
+  //   await stripe.redirectToCheckout({sessionId: data.id})
+  // }
 
   return (
     <div className={classes.container}>
