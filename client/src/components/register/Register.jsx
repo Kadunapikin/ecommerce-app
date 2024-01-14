@@ -1,15 +1,12 @@
-// Register.js
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
-import classes from './register.module.css';
-
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate(); // Create a navigate function for navigation
 
   const handleRegister = async () => {
     try {
@@ -27,7 +24,7 @@ const Register = () => {
       localStorage.setItem('token', token);
 
       // Redirect to the success page or any desired page after successful registration
-      history.push('/success');
+      navigate('/success');
     } catch (error) {
       // Handle registration error (e.g., show an error message to the user)
       console.error(error);

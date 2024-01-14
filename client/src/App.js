@@ -1,25 +1,38 @@
-// App.js
 import './App.css';
 import Cart from './components/cart/Cart';
 import ProductItem from './components/productItem/ProductItem';
 import Success from './components/success/Success';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Register from './components/register/Register';
 import Login from './components/login/Login';
 
 function App() {
+  const navigate = useNavigate();
+  const isAuthenticated = localStorage.getItem('token'); // Check if the user is authenticated
+
   return (
     <div>
       <Routes>
-        <Route path='/' element={
-          <>
-            <Cart />
-            <ProductItem />
-          </>
-        } />
+        <Route
+          path='/'
+          element={
+            <>
+              {isAuthenticated && <Cart />}
+              {isAuthenticated && <ProductItem />}
+              {!isAuthenticated && (
+                <div>
+                  <p>
+                    Please <Link to='/login'>Login</Link> or{' '}
+                    <Link to='/register'>Register</Link> to view and add products.
+                  </p>
+                </div>
+              )}
+            </>
+          }
+        />
         <Route path='/success' element={<Success />} />
-        <Route path='/login' element={<Login />} /> {/* Add Login route */}
-        <Route path='/register' element={<Register />} /> {/* Add Register route */}
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </div>
   );

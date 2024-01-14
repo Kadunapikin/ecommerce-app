@@ -1,14 +1,11 @@
-// Login.js
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom'; // Import Link and useHistory
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
-import classes from './login.module.css';
-
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory(); // Create a history object for navigation
+  const navigate = useNavigate(); // Create a navigate function for navigation
 
   const handleLogin = async () => {
     try {
@@ -25,7 +22,7 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       // Redirect to the success page or any desired page after successful login
-      history.push('/success');
+      navigate('/');
     } catch (error) {
       // Handle login error (e.g., show an error message to the user)
       console.error(error);
