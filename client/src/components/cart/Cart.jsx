@@ -3,30 +3,77 @@ import classes from './cart.module.css';
 import { useCartContext } from '../../context/cartContext';
 import {AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai';
 import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+import LogoutButton from '../logoutButton/LogoutButton';
 
 const Cart = () => {
   const {products, isOpen, toggleCart, removeProduct} = useCartContext();
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
   const handleCheckout = async () => {
-    const lineItems = products.map((item) => {
-      return {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.name
+    try {
+      // Retrieve the JWT token from localStorage
+      const token = localStorage.getItem('token');
+  
+      const lineItems = products.map((item) => {
+        return {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price * 100,
           },
-          unit_amount: item.price * 100
-        },
-        quantity: item.quantity
+          quantity: item.quantity,
+        };
+      });
+      const { data } = await axios.post(
+        'http://localhost:5000/checkout',
+        { lineItems },
+        {
+          headers: {
+            // Include the JWT token in the Authorization header
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+  
+      const stripe = await stripePromise;
+  
+      const result = await stripe.redirectToCheckout({ sessionId: data.id });
+  
+      if (result.error) {
+        console.error(result.error.message); // Log the error
       }
-    })
-    const {data} = axios.post('http://localhost:5000/checkout', {lineItems})
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+    
+  // const handleCheckout = async () => {
+  //   const lineItems = products.map((item) => {
+  //     return {
+  //       price_data: {
+  //         currency: 'usd',
+  //         product_data: {
+  //           name: item.name
+  //         },
+  //         unit_amount: item.price * 100
+  //       },
+  //       quantity: item.quantity
+  //     }
+  //   })
+  //   const {data} = await axios.post('http://localhost:5000/checkout', {lineItems})
+    
+  //   const stripe = await stripePromise
+
+  //   await stripe.redirectToCheckout({sessionId: data.id})
+  // }
 
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
+        <div className={classes.logoutbtn}>{<LogoutButton />}</div>
         <div className={classes.cartIcon}>
           <AiOutlineShoppingCart size={25} onClick={toggleCart} />
           <span className={classes.cartNumber}>
@@ -50,7 +97,7 @@ const Cart = () => {
                   ))}
                 </div>
                 <div className={classes.controls}>
-                  <button onClick={() => {}}>Checkout</button>
+                  <button onClick={handleCheckout}>Checkout</button>
                   <span onClick={toggleCart}>Close Cart</span>
                 </div>
                 </>
@@ -59,7 +106,6 @@ const Cart = () => {
           )}
         </div>
       </div>
-      Cart
     </div>
   )
 }
