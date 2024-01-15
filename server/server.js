@@ -10,6 +10,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    // Additional CORS options
+  };
+  
+  app.use(cors(corsOptions));
+  
+
 mongoose.connect('mongodb+srv://Iceman427:Iceman4real@deviceapi.w5d8xd9.mongodb.net/e-commerce-db', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -48,7 +56,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-const jwtSecret = 'your-secret-key'; // Replace with your secret key
+const jwtSecret = process.env.JWT_SECRET; // Replace with your secret key
 
 app.post('/login', async (req, res) => {
   try {
@@ -92,21 +100,42 @@ function verifyToken(req, res, next) {
   });
 }
 
-app.post('/checkout', verifyToken, async (req, res) => {
-  try {
-    const session = await stripe.checkout.session.create({
-      line_items: req.body.lineItems,
-      mode: 'payment',
-      payment_method_types: ['card'],
-      success_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000',
-    });
-    return res.status(200).json(session);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json(error);
-  }
-});
+app.post('/checkout', async (req, res) => {
+    try {
+      const lineItems = req.body.lineItems;
+  
+      const session = await stripe.checkout.sessions.create({
+        line_items: lineItems,
+        mode: 'payment',
+        payment_method_types: ['card'],
+        success_url: 'http://localhost:3000/success',
+        cancel_url: 'http://localhost:3000',
+      });
+  
+      return res.status(200).json(session);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json(error);
+    }
+  });  
+
+// //checkout route that verifies users authentication
+
+// app.post('/checkout', verifyToken, async (req, res) => {
+//   try {
+//     const session = await stripe.checkout.session.create({
+//       line_items: req.body.lineItems,
+//       mode: 'payment',
+//       payment_method_types: ['card'],
+//       success_url: 'http://localhost:3000/success',
+//       cancel_url: 'http://localhost:3000',
+//     });
+//     return res.status(200).json(session);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json(error);
+//   }
+// });
 
 app.listen(process.env.PORT, () => console.log('Server is running successfully'));
 
