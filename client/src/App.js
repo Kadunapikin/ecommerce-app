@@ -21,9 +21,9 @@ function App() {
         <Route
           path="/"
           element={
-            <div>
+            <div className="landing-page">
               <h2>Welcome to Our E-Commerce Store!</h2>
-              <p>
+              <p className="welcome-text">
                 To view and add products to your cart, please{' '}
                 {isAuthenticated ? (
                   <Link to="/product">proceed to products</Link>
