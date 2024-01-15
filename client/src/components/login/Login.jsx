@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import react-toastify
+import './login.css'; 
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -27,33 +28,33 @@ const Login = () => {
   };
 
   return (
+<div className="login-container">
+  <h2>Login</h2>
+  <form className="login-form">
     <div>
-      <h2>Login</h2>
-      <form>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="button" onClick={handleLogin}>
-          Login
-        </button>
-      </form>
-      <p>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
+      <label>Email:</label>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
     </div>
+    <div>
+      <label>Password:</label>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+    </div>
+    <button type="button" onClick={handleLogin}>
+      Login
+    </button>
+  </form>
+  <p className="registration-link">
+    Don't have an account? <Link to="/register">Register</Link>
+  </p>
+</div>
   );
 };
 

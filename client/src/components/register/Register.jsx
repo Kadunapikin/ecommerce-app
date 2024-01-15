@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import react-toastify
+import './register.css'; 
 
 
 const Register = () => {
@@ -56,9 +57,9 @@ const Register = () => {
   };
   
   return (
-    <div>
+<div className="register-container">
       <h2>Register</h2>
-      <form>
+      <form className="register-form">
         <div>
           <label>Username:</label>
           <input
@@ -87,11 +88,10 @@ const Register = () => {
           Register
         </button>
       </form>
-      <p>
+      <p className="login-link">
         Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
   );
 };
-
 export default Register;
